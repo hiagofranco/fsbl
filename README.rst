@@ -4,6 +4,21 @@ FSBL
 FSBL is First Stage Boot Loader.
 Act as ATF BL2.
 
+To Compile this project
+====
+
+```sh
+ARCH=riscv CROSS_COMPILE_GLIBC_RISCV64=riscv64-linux-gnu- CHIP_ARCH=cv181x DDR_CFG=ddr3_1866_x16 BOOT_CPU=riscv make
+```
+
+To create the final fip.bin
+=====
+After compiling u-boot and opensbi, run
+
+```sh
+ARCH=riscv CROSS_COMPILE_GLIBC_RISCV64=riscv64-linux-gnu- CHIP_ARCH=cv181x DDR_CFG=ddr3_1866_x16 BOOT_CPU=riscv OPENSBI=../opensbi/build/platform/generic/firmware/fw_dynamic.bin NEXTLOADER=../u-boot/u-boot.bin ./fip.sh
+```
+
 License
 =======
 
@@ -50,3 +65,4 @@ Third-party components
   License: public domain
 
 File-level SPDX headers remain authoritative for each individual file.
+=======
