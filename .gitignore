@@ -22,3 +22,4 @@ GTAGS
 tags
 #ignore vim swap files
 *.swo
+fip.bin

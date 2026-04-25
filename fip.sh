@@ -37,11 +37,20 @@ get_memmap_conf() {
 
 MONITOR_RUNADDR="$(get_memmap_conf "CVIMMAP_MONITOR_ADDR")"
 
+# Prepend the 32-byte BL2 header the BootROM expects (4-byte `jal zero, +32`
+# followed by 28 bytes of metadata slots) to u-boot-spl.bin so that the
+# BootROM reaches U-Boot SPL's _start.
+SPL_IN="../u-boot/spl/u-boot-spl.bin"
+SPL_WRAPPED="$BUILDDIR/u-boot-spl-bl2.bin"
+mkdir -p "$BUILDDIR"
+"$PYTHON3" -c "import sys; sys.stdout.buffer.write(bytes.fromhex('6f00000200000000000000000000000000000000000000000000000000000000'))" > "$SPL_WRAPPED"
+cat "$SPL_IN" >> "$SPL_WRAPPED"
+
 "$PYTHON3" "$FIPTOOL" -v genfip \
 	fip.bin					\
 	--MONITOR_RUNADDR="$MONITOR_RUNADDR"	\
 	--CHIP_CONF="$BUILDDIR/chip_conf.bin"	\
-	--BL2="$BUILDDIR/bl2.bin"		\
+	--BL2="$SPL_WRAPPED"			\
 	--MONITOR="$OPENSBI"			\
 	--LOADER_2ND="$NEXTLOADER"		\
 	--LOADER_2ND_BASE="$NEXTLOADER_BASE"	\
