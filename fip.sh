@@ -50,7 +50,7 @@ cat "$SPL_IN" >> "$SPL_WRAPPED"
 	fip.bin					\
 	--MONITOR_RUNADDR="$MONITOR_RUNADDR"	\
 	--CHIP_CONF="$BUILDDIR/chip_conf.bin"	\
-	--BL2="$SPL_WRAPPED"			\
+	--BL2="$BUILDDIR/u-boot-spl-bl2.bin"	\
 	--MONITOR="$OPENSBI"			\
 	--LOADER_2ND="$NEXTLOADER"		\
 	--LOADER_2ND_BASE="$NEXTLOADER_BASE"	\
